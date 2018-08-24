@@ -11,10 +11,11 @@ const server = http.createServer((req, res) => {
 const io = require("socket.io").listen(server);
 
 io.sockets.on("connection", socket => {
-  socket.emit("message", { from: "naw", id: 2 });
+  socket.emit("message", "you just connected");
+  socket.broadcast.emit("message", "there a new user connected");
 
   socket.on("message", message => {
-    console.log("A client is speaking to me! They’re saying: " + message);
+    socket.emit("message", "message from naw");
   });
 });
 

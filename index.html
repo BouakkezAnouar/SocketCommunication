@@ -8,21 +8,36 @@
 
 <body>
     <h1>Communication with socket.io!</h1>
-    <p>
-        <input type="text" id="text" />
-        <input type="button" value="send" id="send">
-    </p>
+    <form id="form">
+        <input type="text" id="text" autofocus />
+        <input type="submit" value="send" id="send">
+    </form>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io.connect('http://localhost:8080');
+        let socket = io.connect('http://localhost:8080');
+        let username;
+
+        //seting the username 
+        while (!username || username.length < 3)
+            username = prompt("What's your name ?(must be at least 3 caracters)");
+
+        //save username
+        socket.emit("username", username);
+
+        //recieving message from server
         socket.on("message", message => {
             alert('the server has a message for you : ' + message);
         });
 
-        document.getElementById("send").onclick = function () {
-            socket.emit('message', document.getElementById("text").value)
-        }
+        // sending a message to the server with enter click 
+        document.getElementById('form').addEventListener('submit', function (e) {
+            e.preventDefault();//dont reload the page when clicking enter
+            let text = document.getElementById("text").value;//message to sent
+            if (text.length === 0) return //must be not empty  
+            socket.emit('message', text); //send the message
+            alert("message sent !!");
+        }, false);
     </script>
 </body>
 

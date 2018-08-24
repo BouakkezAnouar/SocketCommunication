@@ -8,13 +8,21 @@
 
 <body>
     <h1>Communication with socket.io!</h1>
+    <p>
+        <input type="text" id="text" />
+        <input type="button" value="send" id="send">
+    </p>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io.connect('http://localhost:8080');
         socket.on("message", message => {
             alert('the server has a message for you : ' + message.from);
-        })
+        });
+
+        document.getElementById("send").onclick = function () {
+            socket.emit('message', document.getElementById("text").value)
+        }
     </script>
 </body>
 

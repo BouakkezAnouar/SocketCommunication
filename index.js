@@ -11,7 +11,7 @@ const server = http.createServer((req, res) => {
 const io = require("socket.io").listen(server);
 
 io.sockets.on("connection", socket => {
-  console.log("A client is connected !");
+  socket.emit("message", { from: "naw", id: 2 });
 });
 
 server.listen(8080);
